@@ -10,7 +10,7 @@ router = APIRouter(prefix="/users", tags=["Users"])
 @router.get("/", response_model=List[User])
 async def read_list(skip: int = 0, limit: int = 10):
     """fetch all users"""
-    users = await engine.find(User)
+    users = await engine.find(User, skip=skip, limit=limit)
     return users
 
 
