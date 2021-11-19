@@ -19,5 +19,5 @@ class Taxi(Model):
     location: Location
 
 
-user_collection = engine.get_collection(Taxi)
-user_collection.create_index([("location", GEOSPHERE)])
+collection = engine.get_collection(Taxi)
+collection.create_index([("location", GEOSPHERE)])

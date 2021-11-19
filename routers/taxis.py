@@ -1,7 +1,7 @@
 from typing import List
 
 from fastapi import APIRouter
-from models import Location, Taxi, engine
+from models import engine, Location, Taxi, taxi_collection
 
 router = APIRouter(prefix="/taxis", tags=["Taxis"])
 
@@ -20,32 +20,25 @@ async def create(taxi: Taxi):
     return taxi
 
 
-@router.get("/near", response_model=List[Taxi])
-async def fetch_taxis_within_radius(
-    lat: float, long: float, distance: int = 1000, skip: int = 0, limit: int = 3
-):
+@router.post("/near", response_model=List[Taxi])
+async def fetch_taxis_within_radius(customer_location: Location, radius: int = 1000):
     """list taxis within the given distance (1km by default)"""
-    # todo fix the query
     query = {
-        "location": [
-            ("$near", [lat, long]),
-            ("$maxDistance", distance),
-        ]
+        "location": {
+            "$nearSphere": {
+                "$geometry": customer_location.dict(),
+                "$maxDistance": radius,
+            }
+        }
     }
-    taxis = await engine.find(Taxi, query, skip=skip, limit=limit)
+    taxis = []
+    async for t in taxi_collection.find(query):
+        taxis.append(Taxi.parse_doc(t))
     return taxis
 
 
-@router.get("/nearest", response_model=List[Taxi])
-async def fetch_nearest_taxis(
-    lat: float, long: float, distance: int = 1000, skip: int = 0, limit: int = 2
-):
+@router.post("/nearest", response_model=List[Taxi])
+async def fetch_nearest_taxis(customer_location: Location, limit: int = 2):
     """list nearest taxis (limited to 2 by default)"""
-    # todo fix the query
-    query = {
-        "location": [
-            ("$near", [lat, long]),
-        ]
-    }
-    taxis = await engine.find(Taxi, query, skip=skip, limit=limit)
-    return taxis
+    query = {"location": {"$nearSphere": {"$geometry": customer_location.dict()}}}
+    return list(map(Taxi.parse_doc, await taxi_collection.find(query).to_list(limit)))

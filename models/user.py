@@ -1,5 +1,5 @@
 from odmantic import Model
-from pydantic import constr, EmailStr
+from pydantic import EmailStr, constr
 from pymongo import GEOSPHERE
 
 from .db import engine
@@ -12,5 +12,5 @@ class User(Model):
 
 
 # create indexes
-user_collection = engine.get_collection(User)
-user_collection.create_index([("location", GEOSPHERE)])
+collection = engine.get_collection(User)
+collection.create_index([("location", GEOSPHERE)])
