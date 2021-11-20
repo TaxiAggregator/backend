@@ -13,11 +13,11 @@ async def read_list(skip: int = 0, limit: int = 10):
     return taxis
 
 
-@router.post("/", response_model=Taxi)
-async def create(taxi: Taxi):
-    """Register new taxi"""
-    await engine.save(taxi)
-    return taxi
+@router.post("/", response_model=List[Taxi])
+async def create(taxis: List[Taxi]):
+    """Register new taxi(s)"""
+    await engine.save_all(taxis)
+    return taxis
 
 
 @router.post("/near", response_model=List[Taxi])
