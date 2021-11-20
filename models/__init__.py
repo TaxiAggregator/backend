@@ -1,3 +1,4 @@
+"""models package"""
 # import engine
 from .db import engine
 

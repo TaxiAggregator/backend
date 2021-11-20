@@ -1,4 +1,4 @@
-"""api backend for the taxi aggrigator capstone project (ACSE IIT Madras)"""
+"""api backend for the taxi aggregator capstone project (ACSE IIT Madras)"""
 from fastapi import FastAPI, APIRouter
 from routers import taxi_router, user_router
 
