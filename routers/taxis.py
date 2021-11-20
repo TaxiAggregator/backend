@@ -1,6 +1,7 @@
+"""routes for taxi"""
 from typing import List
 
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException, status
 from models import engine, Location, Taxi, taxi_collection
 
 router = APIRouter(prefix="/taxis", tags=["Taxis"])
@@ -32,8 +33,10 @@ async def fetch_taxis_within_radius(customer_location: Location, radius: int = 1
         }
     }
     taxis = []
-    async for t in taxi_collection.find(query):
-        taxis.append(Taxi.parse_doc(t))
+    async for taxi in taxi_collection.find(query):
+        taxis.append(Taxi.parse_doc(taxi))
+    if not taxis:
+        raise HTTPException(status.HTTP_404_NOT_FOUND)
     return taxis
 
 
@@ -41,4 +44,7 @@ async def fetch_taxis_within_radius(customer_location: Location, radius: int = 1
 async def fetch_nearest_taxis(customer_location: Location, limit: int = 2):
     """list nearest taxis (limited to 2 by default)"""
     query = {"location": {"$nearSphere": {"$geometry": customer_location.dict()}}}
-    return list(map(Taxi.parse_doc, await taxi_collection.find(query).to_list(limit)))
+    taxis = list(map(Taxi.parse_doc, await taxi_collection.find(query).to_list(limit)))
+    if not taxis:
+        raise HTTPException(status.HTTP_404_NOT_FOUND)
+    return taxis
