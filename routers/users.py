@@ -24,7 +24,7 @@ async def read_list(skip: int = 0, limit: int = 10):
     return users
 
 
-@router.get("/{user_id}", response_model=List[User])
+@router.get("/{user_id}", response_model=User)
 async def read_one_by_id(user_id: ObjectId):
     """fetch user by id"""
     user = await engine.find_one(User, User.id == user_id)
