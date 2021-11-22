@@ -1,7 +1,7 @@
 """models package"""
-from .db import engine
-from .location import Location
+from .settings import Settings
 from .taxi import Taxi
-from .taxi import collection as taxi_collection
 from .user import User, UserUpdateSchema
-from .user import collection as user_collection
+
+# All models to instantiate on load
+__beanie_models__ = [Taxi, User]

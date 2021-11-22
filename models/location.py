@@ -1,9 +1,8 @@
 """location embedded model"""
-from odmantic import EmbeddedModel
-from pydantic.types import conlist
+from pydantic import BaseModel, conlist
 
 
-class Location(EmbeddedModel):  # pylint:disable=too-few-public-methods
+class Location(BaseModel):  # pylint:disable=too-few-public-methods
     """location embedded model"""
 
     type: str = "Point"

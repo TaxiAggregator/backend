@@ -1,14 +1,14 @@
 """taxi data model"""
 from enum import Enum
 
-from odmantic import Model
+from beanie import Document
 from pydantic.types import constr
 from pymongo import GEOSPHERE
 
-from .db import engine
 from .location import Location
 
 
+# pylint:disable=too-few-public-methods
 class TaxiType(str, Enum):
     """taxi type choices"""
 
@@ -17,24 +17,14 @@ class TaxiType(str, Enum):
     LUXURY = "Luxury"
 
 
-class Taxi(Model):  # pylint:disable=too-few-public-methods
+class Taxi(Document):
     """taxi data model"""
 
     name: constr(min_length=3, max_length=30)  # type: ignore
     type: TaxiType
     location: Location
 
-    class Config:
-        """class config"""
+    class Collection:
+        """index fields"""
 
-        schema_extra = {
-            "example": {
-                "name": "Pavan",
-                "type": "Deluxe",
-                "location": {"type": "Point", "coordinates": [28.66542, 77.23154]},
-            }
-        }
-
-
-collection = engine.get_collection(Taxi)
-collection.create_index([("location", GEOSPHERE)])
+        indexes = [[("location", GEOSPHERE)]]

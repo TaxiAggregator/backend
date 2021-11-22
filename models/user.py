@@ -1,28 +1,28 @@
 """user data model"""
 from typing import Optional
 
-from odmantic import Model
+from beanie import Document
 from pydantic import BaseModel, constr
 from pymongo import GEOSPHERE
 
-from .db import engine
 from .location import Location
 
 
-class User(Model):  # pylint:disable=too-few-public-methods
+# pylint:disable=too-few-public-methods
+class User(Document):
     """user data model"""
 
     name: constr(min_length=3, max_length=30)  # type: ignore
     location: Location
 
+    class Collection:
+        """index fields"""
 
-class UserUpdateSchema(BaseModel):  # pylint:disable=too-few-public-methods
+        indexes = [[("location", GEOSPHERE)]]
+
+
+class UserUpdateSchema(BaseModel):
     """Schema for updating the user"""
 
     name: Optional[constr(min_length=3, max_length=30)]  # type: ignore
     location: Optional[Location]
-
-
-# create indexes
-collection = engine.get_collection(User)
-collection.create_index([("location", GEOSPHERE)])
