@@ -1,8 +1,8 @@
 The project is based on [FastAPI](https://fastapi.tiangolo.com). It is pretty similar to Flask but brings modern python functionalities like
 async programming and typing into play.
 
-For MongoDB, I am using [ODMantic](https://art049.github.io/odmantic/), which is based on [Motor](https://motor.readthedocs.io/en/stable/)
-(which is based on [pymongo](https://pymongo.readthedocs.io/en/stable/)). It is a neat ODM and borrows heavily 
+For MongoDB, I am using [Beanie](https://roman-right.github.io/beanie/), which is based on [Motor](https://motor.readthedocs.io/en/stable/)
+(which is based on [pymongo](https://pymongo.readthedocs.io/en/stable/)). It is a neat ODM and borrows heavily
 from [SQLAlchemy](https://www.sqlalchemy.org)/[Django ORM](https://docs.djangoproject.com/en/3.2/topics/db/).
 
 Both FastAPI and ODMantic use [Pydantic](https://pydantic-docs.helpmanual.io) under the hood.
