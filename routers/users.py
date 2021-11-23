@@ -12,7 +12,7 @@ router = APIRouter(prefix="/users", tags=["Users"])
 # create path operation functions
 @router.post("/signup", response_model=List[User], status_code=status.HTTP_201_CREATED)
 async def create(users: List[User]):
-    """signup new user"""
+    """signup new user(s)"""
     result = await User.insert_many(users)
     return await User.find(In(User.id, result.inserted_ids)).to_list()
 
