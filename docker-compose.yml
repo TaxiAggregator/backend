@@ -6,6 +6,8 @@ services:
       - "8000:8000"
   db:
     image: "mongo:latest"
+    ports:
+      - "27017:27017"
     volumes:
       - data:/data/db
 
