@@ -8,4 +8,10 @@
     "cSpell.words": [
         "ACSE"
     ],
+    "python.linting.banditArgs": [
+        "--skip=B101"
+    ],
+    "python.linting.pylintArgs": [
+        "--disable=import-error,too-few-public-methods,wrong-import-order"
+    ],
 }

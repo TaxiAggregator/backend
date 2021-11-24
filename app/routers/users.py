@@ -10,7 +10,9 @@ router = APIRouter(prefix="/users", tags=["Users"])
 
 
 # create path operation functions
-@router.post("/signup", response_model=List[User], status_code=status.HTTP_201_CREATED)
+@router.post(
+    "/signup", response_model=List[User], status_code=status.HTTP_201_CREATED
+)
 async def create(users: List[User]):
     """signup new user(s)"""
     result = await User.insert_many(users)
@@ -38,7 +40,9 @@ async def read_one_by_id(user_id: PydanticObjectId):
 
 # update path operation functions
 @router.patch("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def update_user_by_id(user_id: PydanticObjectId, patch: UserUpdateSchema):
+async def update_user_by_id(
+    user_id: PydanticObjectId, patch: UserUpdateSchema
+):
     """update user by id"""
     user = await User.find_one(User.id == user_id)
     if not user:

@@ -1,5 +1,7 @@
 """location embedded model"""
+from decimal import Decimal
 from enum import Enum
+
 from pydantic import BaseModel, conlist
 
 
@@ -14,4 +16,4 @@ class Location(BaseModel):  # pylint:disable=too-few-public-methods
     """location embedded model"""
 
     type: LocationType
-    coordinates: conlist(float, min_items=2, max_items=2)  # type: ignore
+    coordinates: conlist(Decimal, min_items=2, max_items=2)  # type: ignore

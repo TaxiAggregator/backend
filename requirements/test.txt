@@ -1,2 +1,6 @@
 pytest
-factory_boy
+pytest-asyncio
+pytest-factoryboy
+requests
+asgi-lifespan
+httpx

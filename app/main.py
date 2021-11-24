@@ -6,7 +6,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from models import Settings, __beanie_models__
 from routers import taxi_router, user_router
 
-settings = Settings(_env_file=".env")
+settings = Settings(_env_file="../.env")
 app = FastAPI(title="Taxi Aggregator")
 
 
@@ -14,10 +14,8 @@ app = FastAPI(title="Taxi Aggregator")
 async def startup_event():
     """startup code"""
     # init beanie
-    client = AsyncIOMotorClient(settings.mongo_connection)
-    await init_beanie(
-        database=client[settings.mongo_db], document_models=__beanie_models__
-    )
+    app.db = AsyncIOMotorClient(settings.mongo_connection)[settings.mongo_db]  # type: ignore
+    await init_beanie(database=app.db, document_models=__beanie_models__)  # type: ignore
 
     # add routers
     api_v1 = APIRouter(prefix="/api/v1")
