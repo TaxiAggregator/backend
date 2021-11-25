@@ -11,7 +11,7 @@
             "request": "launch",
             "module": "uvicorn",
             "args": [
-                "main:app"
+                "server.main:app"
             ],
             "jinja": false
         }

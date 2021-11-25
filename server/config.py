@@ -7,3 +7,7 @@ class Settings(BaseSettings):  # pylint:disable=too-few-public-methods
 
     mongo_connection: str
     mongo_db: str
+    version: str
+
+
+CONFIG = Settings(_env_file=".env")

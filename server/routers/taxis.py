@@ -3,7 +3,7 @@ from typing import List
 
 from beanie.operators import In, Near
 from fastapi import APIRouter, HTTPException, status
-from models import Taxi
+from server.models import Taxi
 
 router = APIRouter(prefix="/taxis", tags=["Taxis"])
 
