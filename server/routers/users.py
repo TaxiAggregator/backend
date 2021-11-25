@@ -4,14 +4,14 @@ from typing import List
 from beanie import PydanticObjectId
 from beanie.operators import In
 from fastapi import APIRouter, HTTPException, status
-from models import User, UserUpdateSchema
+from server.models import User, UserUpdateSchema
 
 router = APIRouter(prefix="/users", tags=["Users"])
 
 
 # create path operation functions
 @router.post(
-    "/signup", response_model=List[User], status_code=status.HTTP_201_CREATED
+    "/", response_model=List[User], status_code=status.HTTP_201_CREATED
 )
 async def create(users: List[User]):
     """signup new user(s)"""
