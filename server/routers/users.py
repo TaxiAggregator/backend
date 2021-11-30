@@ -51,6 +51,7 @@ async def update_user_by_id(
     patch_dict = patch.dict(exclude_unset=True)
     for field, value in patch_dict.items():
         setattr(user, field, value)
+
     await user.save()
 
 
