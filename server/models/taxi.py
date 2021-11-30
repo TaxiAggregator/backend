@@ -1,7 +1,9 @@
 """taxi data model"""
 from enum import Enum
+from typing import Optional
 
 from beanie import Document
+from pydantic import BaseModel
 from pydantic.types import constr
 from pymongo import GEOSPHERE
 
@@ -28,3 +30,11 @@ class Taxi(Document):
         """index fields"""
 
         indexes = [[("location", GEOSPHERE)]]
+
+
+class TaxiUpdateSchema(BaseModel):
+    """schema for update the taxi"""
+
+    name: Optional[constr(min_length=3, max_length=30)]  # type: ignore
+    type: Optional[TaxiType]
+    location: Optional[Location]

@@ -1,6 +1,6 @@
 """models package"""
 from .location import Location
-from .taxi import Taxi
+from .taxi import Taxi, TaxiUpdateSchema
 from .user import User, UserUpdateSchema
 
 # All models to instantiate on load

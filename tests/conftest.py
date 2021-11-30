@@ -1,4 +1,6 @@
 """Pytest fixtures"""
+from typing import List
+
 import pytest
 from asgi_lifespan import LifespanManager
 from beanie.operators import In
@@ -6,11 +8,12 @@ from fastapi import FastAPI
 from httpx import AsyncClient
 from pytest_factoryboy import register
 from server.main import app
-from server.models import User
+from server.models import Taxi, User
 
-from tests.factories import LocationFactory, UserFactory
+from tests.factories import LocationFactory, TaxiFactory, UserFactory
 
 register(LocationFactory)
+register(TaxiFactory)
 register(UserFactory)
 
 
@@ -34,10 +37,14 @@ async def client():
 
 
 @pytest.fixture
-async def users(request, user_factory):
+async def users(request, user_factory) -> List[User]:
     """create user(s)"""
     # number of users to be created (provided by test using indrect parametrization)
     count = request.param if hasattr(request, "param") else 1
+
+    # if 0 users are to be created, return an empty list
+    if not count:
+        return []
 
     created_users = user_factory.create_batch(count)
     result = await User.insert_many(created_users)
@@ -45,3 +52,21 @@ async def users(request, user_factory):
 
     # need to extract users from database as factory do not save them in database
     return await User.find_many(In(User.id, ids)).to_list()
+
+
+@pytest.fixture
+async def taxis(request, taxi_factory) -> List[Taxi]:
+    """create user(s)"""
+    # number of taxis to be created (provided by test using indrect parametrization)
+    count = request.param if hasattr(request, "param") else 1
+
+    # if 0 taxis are to be created, return an empty list
+    if not count:
+        return []
+
+    created_taxis = taxi_factory.create_batch(count)
+    result = await Taxi.insert_many(created_taxis)
+    ids = result.inserted_ids
+
+    # need to extract taxis from database as factory do not save them in database
+    return await Taxi.find_many(In(Taxi.id, ids)).to_list()
