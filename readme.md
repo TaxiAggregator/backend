@@ -11,13 +11,49 @@ You can see the repo as an SOA backend, where all services are implemented in a 
 the backend into individual microservices. The effort needed for refactoring will be minimal. We will have to put up a tiny [main.py](./main.py)
 for a particular service and move corresponding [model](./models) and [router](./routers) files into separate repositories.
 
-If you would like to run the code locally:
-1. Clone the repo
-2. Create virtualenv
-3. Install dependencies `pip install -r requirements/local.txt`
-4. run `uvicorn main:app`
-5. With that you should be able to access the [Swagger UI](http://127.0.0.1:8000/docs) or [ReDoc page](http://127.0.0.1:8000/redoc).
+I am also using [bandit](/.vscode/launch.json), [black](https://black.readthedocs.io/en/stable/), and [pylint](https://pylint.pycqa.org/en/latest/) for code quality.
+
+## Running the application locally:
+
+1. Clone the repository
+1. Create virtualenv
+1. Install dependencies `pip install -r requirements/local.txt`
+1. Update the .env file to match the application settings
+
+    The values in .env file are set up so that running from docker works with no changes needed. **Please update the .env file with correct mongo connection string** and other application defaults.
+1. run `uvicorn server.main:app`
+1. With that you should be able to access the [Swagger UI](http://127.0.0.1:8000/docs) or [ReDoc page](http://127.0.0.1:8000/redoc).
 
 If you are using VSCode, there is a [launch config](./.vscode/launch.json) in the .vscode folder.
 
-I am also using [bandit](/.vscode/launch.json), [black](https://black.readthedocs.io/en/stable/), and [pylint](https://pylint.pycqa.org/en/latest/) for code quality.
+## Running with docker
+
+1. Clone the repository
+1. Ensure the docker is running
+1. Run `docker compose up -d`
+
+This will build the webapp image and also run mongodb locally in a container. Please refer to docker-compose.yml for more details.
+
+## Script for generating dummy user and taxi data
+
+Use generate_data.py to generate the dummy data in following manner
+1. Creating dummy user data in json format
+
+    `python generate_data.py user --count 60`
+
+    The data will be saved in **user_data.json** in current working directory.
+
+1. Creating dummy taxi data in json format
+
+    `python generate_data.py taxi --count 60`
+
+    The data will be saved in **taxi_data.json** in current working directory
+
+1. Creating dummy user and taxi data in json format
+
+    `python generate_data.py all --count 60`
+
+    The data will be saved in **user_data.json** and **taxi_data.json** in current working directory
+
+Use `--persist-in-database` with any of the commands above to save the data in database.
+

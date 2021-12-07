@@ -2,7 +2,7 @@
 from typing import Optional
 
 from beanie import Document
-from pydantic import BaseModel, constr
+from pydantic import BaseModel, constr, EmailStr
 from pymongo import GEOSPHERE
 
 from .location import Location
@@ -12,7 +12,9 @@ from .location import Location
 class User(Document):
     """user data model"""
 
+    userid: str
     name: constr(min_length=3, max_length=30)  # type: ignore
+    email: EmailStr
     location: Location
 
     class Collection:
@@ -25,4 +27,5 @@ class UserUpdateSchema(BaseModel):
     """Schema for updating the user"""
 
     name: Optional[constr(min_length=3, max_length=30)]  # type: ignore
+    email: Optional[EmailStr]
     location: Optional[Location]

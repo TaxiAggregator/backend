@@ -3,7 +3,7 @@ from enum import Enum
 from typing import Optional
 
 from beanie import Document
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from pydantic.types import constr
 from pymongo import GEOSPHERE
 
@@ -22,6 +22,8 @@ class TaxiType(str, Enum):
 class Taxi(Document):
     """taxi data model"""
 
+    taxiid: str
+    email: EmailStr
     name: constr(min_length=3, max_length=30)  # type: ignore
     type: TaxiType
     location: Location
@@ -35,6 +37,7 @@ class Taxi(Document):
 class TaxiUpdateSchema(BaseModel):
     """schema for update the taxi"""
 
+    email: Optional[EmailStr]
     name: Optional[constr(min_length=3, max_length=30)]  # type: ignore
     type: Optional[TaxiType]
     location: Optional[Location]
