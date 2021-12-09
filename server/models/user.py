@@ -2,8 +2,8 @@
 from typing import Optional
 
 from beanie import Document
-from pydantic import BaseModel, constr, EmailStr
-from pymongo import GEOSPHERE
+from pydantic import BaseModel, EmailStr, constr
+from pymongo import ASCENDING, GEOSPHERE
 
 from .location import Location
 
@@ -20,7 +20,7 @@ class User(Document):
     class Collection:
         """index fields"""
 
-        indexes = [[("location", GEOSPHERE)]]
+        indexes = [[("location", GEOSPHERE)], [("userid", ASCENDING)]]
 
 
 class UserUpdateSchema(BaseModel):

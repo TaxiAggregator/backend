@@ -5,7 +5,7 @@ from typing import Optional
 from beanie import Document
 from pydantic import BaseModel, EmailStr
 from pydantic.types import constr
-from pymongo import GEOSPHERE
+from pymongo import ASCENDING, GEOSPHERE
 
 from .location import Location
 
@@ -31,7 +31,7 @@ class Taxi(Document):
     class Collection:
         """index fields"""
 
-        indexes = [[("location", GEOSPHERE)]]
+        indexes = [[("location", GEOSPHERE)], [("taxiid", ASCENDING)]]
 
 
 class TaxiUpdateSchema(BaseModel):

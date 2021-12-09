@@ -30,9 +30,9 @@ async def read_list(skip: int = 0, limit: int = 10):
 
 
 @router.get("/{user_id}", response_model=User, status_code=status.HTTP_200_OK)
-async def read_one_by_id(user_id: PydanticObjectId):
+async def read_one_by_id(user_id: str):
     """fetch user by id"""
-    user = await User.find_one(User.id == user_id)
+    user = await User.find_one(User.userid == user_id)
     if not user:
         raise HTTPException(status.HTTP_404_NOT_FOUND)
     return user
@@ -40,11 +40,9 @@ async def read_one_by_id(user_id: PydanticObjectId):
 
 # update path operation functions
 @router.patch("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def update_user_by_id(
-    user_id: PydanticObjectId, patch: UserUpdateSchema
-):
+async def update_user_by_id(user_id: str, patch: UserUpdateSchema):
     """update user by id"""
-    user = await User.find_one(User.id == user_id)
+    user = await User.find_one(User.userid == user_id)
     if not user:
         raise HTTPException(status.HTTP_404_NOT_FOUND)
 
@@ -57,9 +55,9 @@ async def update_user_by_id(
 
 # delete path operation functions
 @router.delete("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_user_by_id(user_id: PydanticObjectId):
+async def delete_user_by_id(user_id: str):
     """delete user by id"""
-    user = await User.find_one(User.id == user_id)
+    user = await User.find_one(User.userid == user_id)
     if not user:
         raise HTTPException(status.HTTP_404_NOT_FOUND)
     await user.delete()

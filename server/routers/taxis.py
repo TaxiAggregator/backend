@@ -73,9 +73,9 @@ async def fetch_nearest_taxis(
 
 
 @router.get("/{taxi_id}", response_model=Taxi, status_code=status.HTTP_200_OK)
-async def read_one_by_id(taxi_id: PydanticObjectId):
+async def read_one_by_id(taxi_id: str):
     """fetch taxi by id"""
-    taxi = await Taxi.find_one(Taxi.id == taxi_id)
+    taxi = await Taxi.find_one(Taxi.taxiid == taxi_id)
     if not taxi:
         raise HTTPException(status.HTTP_404_NOT_FOUND)
     return taxi
@@ -83,11 +83,9 @@ async def read_one_by_id(taxi_id: PydanticObjectId):
 
 # update path operation functions
 @router.patch("/{taxi_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def update_taxi_by_id(
-    taxi_id: PydanticObjectId, patch: TaxiUpdateSchema
-):
+async def update_taxi_by_id(taxi_id: str, patch: TaxiUpdateSchema):
     """update taxi by id"""
-    taxi = await Taxi.find_one(Taxi.id == taxi_id)
+    taxi = await Taxi.find_one(Taxi.taxiid == taxi_id)
     if not taxi:
         raise HTTPException(status.HTTP_404_NOT_FOUND)
 
@@ -100,9 +98,9 @@ async def update_taxi_by_id(
 
 # delete path operation functions
 @router.delete("/{taxi_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_taxi_by_id(taxi_id: PydanticObjectId):
+async def delete_taxi_by_id(taxi_id: str):
     """delete taxi by id"""
-    taxi = await Taxi.find_one(Taxi.id == taxi_id)
+    taxi = await Taxi.find_one(Taxi.taxiid == taxi_id)
     if not taxi:
         raise HTTPException(status.HTTP_404_NOT_FOUND)
     await taxi.delete()
